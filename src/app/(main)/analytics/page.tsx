@@ -4,7 +4,7 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "@/lib/db";
 import { useActiveUser } from "@/lib/hooks";
 import { motion } from "framer-motion";
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 
 const COLORS = ['#3f83f8', '#0e9f6e', '#ff5a1f', '#e02424', '#8b5cf6', '#eab308', '#ec4899', '#14b8a6'];
 

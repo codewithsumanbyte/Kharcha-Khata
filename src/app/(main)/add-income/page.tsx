@@ -19,7 +19,7 @@ export default function AddIncome() {
     const [customCategory, setCustomCategory] = useState("");
     const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
     const [notes, setNotes] = useState("");
-    const [tags, setTags] = useState("");
+    const [tags] = useState("");
     const [allocateGoalId, setAllocateGoalId] = useState("");
 
     const activeGoals = useLiveQuery(

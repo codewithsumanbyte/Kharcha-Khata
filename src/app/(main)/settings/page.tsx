@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useActiveUser, useUsers } from "@/lib/hooks";
+import { useActiveUser } from "@/lib/hooks";
 import { useStore } from "@/store/useStore";
 import { db } from "@/lib/db";
 import { motion } from "framer-motion";
@@ -12,13 +12,14 @@ import { useRouter } from "next/navigation";
 
 export default function Settings() {
     const user = useActiveUser();
-    const users = useUsers();
     const { setActiveUser, currencySymbol, setCurrencySymbol, theme, setTheme, language, setLanguage } = useStore();
     const router = useRouter();
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 
     useEffect(() => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const handler = (e: any) => {
             e.preventDefault();
             setDeferredPrompt(e);
@@ -50,8 +51,7 @@ export default function Settings() {
             a.download = `kharcha_export_${user.name.replace(/\s+/g, '_')}_${Date.now()}.json`;
             a.click();
             URL.revokeObjectURL(url);
-        } catch (e) {
-            console.error(e);
+        } catch {
             alert("Failed to export.");
         }
     };
@@ -88,7 +88,7 @@ export default function Settings() {
                 doc.text("Expense Report", 32, 21);
                 doc.setTextColor(0);
                 doc.setFontSize(12);
-            } catch (err) {
+            } catch {
                 // Ignore logo failure and fall back to pure text
                 doc.setFontSize(18);
                 doc.text("Kharcha Khata - Expense Report", 14, 15);
@@ -129,6 +129,7 @@ export default function Settings() {
             try {
                 const data = JSON.parse(event.target?.result as string);
                 if (data.expenses && Array.isArray(data.expenses)) {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     const importedExpenses = data.expenses.map((exp: any) => ({
                         ...exp,
                         userId: user.id,
@@ -137,8 +138,7 @@ export default function Settings() {
                     await db.expenses.bulkAdd(importedExpenses);
                     alert(`Successfully imported ${importedExpenses.length} expenses.`);
                 }
-            } catch (err) {
-                console.error(err);
+            } catch {
                 alert("Invalid file format.");
             }
         };
@@ -203,6 +203,7 @@ export default function Settings() {
                             <div className="font-medium text-foreground/90">Language</div>
                             <select
                                 value={language}
+                                /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
                                 onChange={(e) => setLanguage(e.target.value as any)}
                                 className="bg-background text-foreground border border-foreground/20 rounded-lg px-3 py-1 outline-none text-sm"
                             >

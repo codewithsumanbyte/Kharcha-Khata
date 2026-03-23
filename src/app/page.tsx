@@ -6,7 +6,7 @@ import { db } from "@/lib/db";
 import { useUsers } from "@/lib/hooks";
 import { useStore } from "@/store/useStore";
 import { motion, AnimatePresence } from "framer-motion";
-import { Wallet, ChevronRight, Plus, User } from "lucide-react";
+import { ChevronRight, Plus, User } from "lucide-react";
 
 export default function Home() {
   const router = useRouter();
@@ -67,6 +67,7 @@ export default function Home() {
         className="w-full max-w-md z-10"
       >
         <div className="flex flex-col items-center mb-10 text-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo.svg" alt="Kharcha Khata Logo" className="w-20 h-20 mb-6 drop-shadow-xl hover:scale-105 transition-transform duration-500" />
           <h1 className="text-3xl font-bold tracking-tight mb-2">Kharcha Khata</h1>
           <p className="text-foreground/60">Privacy-first expense tracking.</p>
