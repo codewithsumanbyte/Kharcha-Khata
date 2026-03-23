@@ -11,7 +11,6 @@ export default function BottomNav() {
     const navItems = [
         { name: "Expenses", href: "/dashboard", icon: Home },
         { name: "Income", href: "/income", icon: Wallet },
-        { name: "Budget", href: "/budget", icon: Target },
         { name: "Analytics", href: "/analytics", icon: PieChart },
         { name: "Settings", href: "/settings", icon: Settings },
     ];

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -8,14 +8,20 @@ import { ArrowLeft, Save } from "lucide-react";
 import { db } from "@/lib/db";
 import { useStore } from "@/store/useStore";
 
-const CATEGORIES = ["Salary", "Business", "Investment", "Gift", "Other"];
+const DEFAULT_INCOME_CATEGORIES = [
+    { name: "Salary", icon: "💼", color: "#0e9f6e" },
+    { name: "Business", icon: "📈", color: "#3f83f8" },
+    { name: "Investment", icon: "💹", color: "#8b5cf6" },
+    { name: "Gift", icon: "🎁", color: "#ec4899" },
+    { name: "Other", icon: "💎", color: "#9ca3af" },
+];
 
 export default function AddIncome() {
     const router = useRouter();
     const { activeUserId, currencySymbol } = useStore();
 
     const [amount, setAmount] = useState("");
-    const [category, setCategory] = useState(CATEGORIES[0]);
+    const [category, setCategory] = useState("");
     const [customCategory, setCustomCategory] = useState("");
     const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
     const [notes, setNotes] = useState("");
@@ -26,6 +32,35 @@ export default function AddIncome() {
         () => activeUserId ? db.goals.where("userId").equals(activeUserId).filter(g => g.currentAmount < g.targetAmount).toArray() : [],
         [activeUserId]
     );
+
+    const categoriesDB = useLiveQuery(
+        () => activeUserId ? db.categories.where("userId").equals(activeUserId).filter(c => c.type === 'income').toArray() : [],
+        [activeUserId]
+    );
+
+    useEffect(() => {
+        const seedCategories = async () => {
+            if (activeUserId && categoriesDB !== undefined && categoriesDB.length === 0) {
+                const toAdd = DEFAULT_INCOME_CATEGORIES.map(c => ({
+                    id: crypto.randomUUID(),
+                    userId: activeUserId,
+                    type: 'income' as const,
+                    name: c.name,
+                    icon: c.icon,
+                    color: c.color,
+                    isDefault: true
+                }));
+                await db.categories.bulkAdd(toAdd);
+            }
+        };
+        seedCategories();
+    }, [activeUserId, categoriesDB]);
+
+    useEffect(() => {
+        if (categoriesDB && categoriesDB.length > 0 && !category) {
+            setCategory(categoriesDB[0].name);
+        }
+    }, [categoriesDB, category]);
 
     const handleSave = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -90,13 +125,18 @@ export default function AddIncome() {
 
                 <div className="space-y-1">
                     <label className="text-sm font-medium text-foreground/50 px-1">Income Source</label>
-                    <select
-                        value={category}
-                        onChange={(e) => setCategory(e.target.value)}
-                        className="glass-input appearance-none text-foreground/90"
-                    >
-                        {CATEGORIES.map(c => <option key={c} value={c} className="bg-background text-foreground">{c}</option>)}
-                    </select>
+                    <div className="flex gap-2">
+                        <select
+                            value={category}
+                            onChange={(e) => setCategory(e.target.value)}
+                            className="glass-input appearance-none text-foreground/90 flex-1"
+                        >
+                            {categoriesDB?.map(c => <option key={c.id} value={c.name} className="bg-background text-foreground">{c.icon} {c.name}</option>)}
+                        </select>
+                        <button type="button" onClick={() => router.push('/settings/categories')} className="p-4 glass rounded-xl text-foreground flex-shrink-0">
+                            +
+                        </button>
+                    </div>
                 </div>
 
                 {category === "Other" && (

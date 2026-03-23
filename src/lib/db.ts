@@ -16,6 +16,7 @@ export interface Expense {
     date: number; // timestamp
     notes: string;
     tags: string[];
+    receiptUrl?: string; // Base64 encoded image string
 }
 
 export interface Budget {
@@ -35,11 +36,22 @@ export interface Goal {
     createdAt: number;
 }
 
+export interface Category {
+    id: string; // UUID
+    userId: string;
+    name: string;
+    icon: string; // Emoji or Lucide icon name
+    color: string; // Hex color code
+    type: 'expense' | 'income';
+    isDefault?: boolean;
+}
+
 export class KharchaKhataDB extends Dexie {
     users!: Table<User>;
     expenses!: Table<Expense>;
     budgets!: Table<Budget>;
     goals!: Table<Goal>;
+    categories!: Table<Category>;
 
     constructor() {
         super('KharchaKhataDB');
@@ -51,6 +63,10 @@ export class KharchaKhataDB extends Dexie {
 
         this.version(2).stores({
             goals: 'id, userId'
+        });
+
+        this.version(3).stores({
+            categories: 'id, userId, type'
         });
     }
 }

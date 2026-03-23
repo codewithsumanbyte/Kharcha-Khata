@@ -5,7 +5,7 @@ import { useActiveUser } from "@/lib/hooks";
 import { useStore } from "@/store/useStore";
 import { db } from "@/lib/db";
 import { motion } from "framer-motion";
-import { Download, Upload, User as UserIcon, FileText, Smartphone } from "lucide-react";
+import { Download, Upload, User as UserIcon, FileText, Smartphone, LayoutGrid, ChevronRight } from "lucide-react";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { useRouter } from "next/navigation";
@@ -17,6 +17,7 @@ export default function Settings() {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+    const [exportPeriod, setExportPeriod] = useState<number>(0); // 0 = All Time, 1 = 1 Month, etc.
 
     useEffect(() => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -38,7 +39,15 @@ export default function Settings() {
     const handleExport = async () => {
         if (!user) return;
         try {
-            const expenses = await db.expenses.where("userId").equals(user.id).toArray();
+            const allTransactions = await db.expenses.where("userId").equals(user.id).toArray();
+            let expenses = allTransactions;
+            if (exportPeriod > 0) {
+                const cutoffDate = new Date();
+                cutoffDate.setMonth(cutoffDate.getMonth() - exportPeriod);
+                const cutoffTime = cutoffDate.getTime();
+                expenses = allTransactions.filter(t => t.date >= cutoffTime);
+            }
+
             const exportData = {
                 user,
                 expenses,
@@ -60,7 +69,15 @@ export default function Settings() {
         if (!user) return;
         try {
             const allTransactions = await db.expenses.where("userId").equals(user.id).toArray();
-            const expensesOnly = allTransactions.filter(exp => exp.type !== 'income');
+            let filteredTransactions = allTransactions;
+            if (exportPeriod > 0) {
+                const cutoffDate = new Date();
+                cutoffDate.setMonth(cutoffDate.getMonth() - exportPeriod);
+                const cutoffTime = cutoffDate.getTime();
+                filteredTransactions = allTransactions.filter(t => t.date >= cutoffTime);
+            }
+
+            const expensesOnly = filteredTransactions.filter(exp => exp.type !== 'income');
             const doc = new jsPDF();
 
             try {
@@ -186,6 +203,16 @@ export default function Settings() {
                 <div>
                     <h2 className="text-sm font-medium text-foreground/50 mb-4 px-1 uppercase tracking-wider">Preferences</h2>
                     <div className="flex flex-col gap-3">
+                        <button
+                            onClick={() => router.push('/settings/categories')}
+                            className="w-full flex items-center justify-between p-4 bg-foreground/5 rounded-xl border border-foreground/10 hover:bg-foreground/10 transition-colors"
+                        >
+                            <div className="flex items-center gap-3">
+                                <LayoutGrid className="w-5 h-5 text-foreground/70" />
+                                <div className="font-medium text-foreground/90">Custom Categories</div>
+                            </div>
+                            <ChevronRight className="w-5 h-5 text-foreground/40" />
+                        </button>
                         <div className="flex items-center justify-between p-4 bg-foreground/5 rounded-xl border border-foreground/10">
                             <div className="font-medium text-foreground/90">Theme</div>
                             <div className="flex items-center gap-2 bg-background border border-foreground/20 rounded-lg p-1">
@@ -235,6 +262,21 @@ export default function Settings() {
                 <div>
                     <h2 className="text-sm font-medium text-foreground/50 mb-4 px-1 uppercase tracking-wider">Data Sync</h2>
                     <div className="space-y-3">
+                        <div className="flex items-center justify-between p-4 bg-foreground/5 rounded-xl border border-foreground/10 mb-2">
+                            <div className="font-medium text-foreground/90">Export Duration</div>
+                            <select
+                                value={exportPeriod}
+                                onChange={(e) => setExportPeriod(Number(e.target.value))}
+                                className="bg-background text-foreground border border-foreground/20 rounded-lg px-3 py-1 outline-none text-sm"
+                            >
+                                <option value={0}>All Time</option>
+                                <option value={1}>Last 1 Month</option>
+                                <option value={2}>Last 2 Months</option>
+                                <option value={3}>Last 3 Months</option>
+                                <option value={6}>Last 6 Months</option>
+                            </select>
+                        </div>
+
                         {deferredPrompt && (
                             <button
                                 onClick={handleInstall}
