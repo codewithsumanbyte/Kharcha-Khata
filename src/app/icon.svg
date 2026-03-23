@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#141414" />
+      <stop offset="100%" stop-color="#050505" />
+    </linearGradient>
+    <linearGradient id="success" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#34d399" />
+    </linearGradient>
+    <linearGradient id="danger" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ef4444" />
+      <stop offset="100%" stop-color="#f87171" />
+    </linearGradient>
+    <linearGradient id="stem" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#a3a3a3" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <rect width="512" height="512" rx="112" fill="url(#bg)" />
+  <rect width="512" height="512" rx="112" fill="transparent" stroke="#262626" stroke-width="4" />
+
+  <g filter="url(#glow)">
+    <!-- Stem (Vertical Line) -->
+    <line x1="160" y1="128" x2="160" y2="384" stroke="url(#stem)" stroke-width="60" stroke-linecap="round" />
+    <!-- Expense Arm (Red, pointing down-right) -->
+    <line x1="160" y1="256" x2="352" y2="368" stroke="url(#danger)" stroke-width="60" stroke-linecap="round" />
+    <!-- Income Arm (Green, pointing up-right) -->
+    <line x1="352" y1="144" x2="160" y2="256" stroke="url(#success)" stroke-width="60" stroke-linecap="round" />
+  </g>
+</svg>

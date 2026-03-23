@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 247 247 247;
+  --foreground: 20 20 20;
+  --surface: rgba(255, 255, 255, 0.7);
+  --surface-light: rgba(255, 255, 255, 0.9);
+  --border: rgba(0, 0, 0, 0.1);
+  --accent: 100 100 100;
+  --success: #10b981;
+  --danger: #ef4444;
+}
+
+.dark {
+  --background: 0 0 0;
+  --foreground: 255 255 255;
+  --surface: rgba(20, 20, 20, 0.6);
+  --surface-light: rgba(40, 40, 40, 0.6);
+  --border: rgba(255, 255, 255, 0.1);
+  --accent: 255 255 255;
+}
+
+body {
+  color: rgb(var(--foreground));
+  background: rgb(var(--background));
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-surface backdrop-blur-md border border-border shadow-glass rounded-2xl;
+  }
+
+  .glass-button {
+    @apply bg-surface-light backdrop-blur-sm border border-border rounded-xl px-4 py-2 transition-all duration-300 active:scale-95;
+  }
+
+  .glass-button:hover {
+    background-color: rgb(var(--foreground) / 0.1);
+  }
+
+  .glass-input {
+    @apply bg-surface border border-border rounded-xl px-4 py-3 focus:outline-none transition-colors w-full text-foreground;
+  }
+
+  .glass-input::placeholder {
+    color: rgb(var(--foreground) / 0.3);
+  }
+
+  .glass-input:focus {
+    border-color: rgb(var(--foreground) / 0.5);
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(to right, rgb(var(--foreground)), rgb(var(--foreground) / 0.6));
+  }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(150, 150, 150, 0.2);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(150, 150, 150, 0.4);
+}
+
+/* Recharts tooltip fix for light mode */
+.recharts-tooltip-wrapper .recharts-default-tooltip {
+  background-color: var(--surface-light) !important;
+  border-color: var(--border) !important;
+  color: rgb(var(--foreground)) !important;
+}
