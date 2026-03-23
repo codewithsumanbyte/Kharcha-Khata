@@ -216,6 +216,7 @@ export default function AddExpensePage() {
                 <div className="space-y-4 pt-2">
                     {receiptUrl ? (
                         <div className="relative inline-block">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img src={receiptUrl} alt="Receipt Preview" className="h-24 w-24 object-cover rounded-xl border border-foreground/10" />
                             <button
                                 type="button"

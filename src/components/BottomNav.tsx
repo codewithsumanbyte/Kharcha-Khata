@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Wallet, PieChart, Settings, Target } from "lucide-react";
+import { Home, Wallet, PieChart, Settings } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function BottomNav() {

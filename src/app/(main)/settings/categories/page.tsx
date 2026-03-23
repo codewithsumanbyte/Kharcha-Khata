@@ -5,7 +5,7 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { db, Category } from "@/lib/db";
 import { useActiveUser } from "@/lib/hooks";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Trash2, ArrowLeft, Tag } from "lucide-react";
+import { Plus, Trash2, ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 const DEFAULT_COLORS = ["#3f83f8", "#0e9f6e", "#ff5a1f", "#e02424", "#8b5cf6", "#eab308", "#ec4899", "#14b8a6"];
