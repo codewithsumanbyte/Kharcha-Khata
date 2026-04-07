@@ -87,7 +87,10 @@ export default function ManageExpenses() {
                         >
                             <div>
                                 <p className="font-medium text-base">{exp.category}</p>
-                                <p className="text-xs text-foreground opacity-50">{exp.notes || new Date(exp.date).toLocaleDateString()}</p>
+                                <div className="flex items-center gap-2 text-xs text-foreground opacity-50">
+                                    <span>{new Date(exp.date).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit' })}</span>
+                                    {exp.notes && <span>• {exp.notes}</span>}
+                                </div>
                             </div>
                             <div className="flex items-center gap-4">
                                 {exp.receiptUrl && (

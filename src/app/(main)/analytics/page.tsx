@@ -150,7 +150,7 @@ export default function Analytics() {
             <section className="glass p-6">
                 <h2 className="text-lg font-semibold mb-6">Daily Spending Trend</h2>
                 
-                {peakDay && peakDay.amount > averageDaily * 2 && peakDay.amount > 0 && (
+                {peakDay && peakDay.amount >= 1000 && (
                     <div className="mb-4 bg-danger/10 text-danger p-3 rounded-xl flex items-start gap-3 text-sm">
                         <AlertTriangle className="w-5 h-5 flex-shrink-0" />
                         <p>High spending alert on the {peakDay.day}th. You spent {currencySymbol}{peakDay.amount.toFixed(2)} in a single day!</p>

@@ -26,20 +26,26 @@ export default function BottomNav() {
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                className="relative p-3 rounded-xl flex items-center justify-center transition-colors hover:bg-foreground/5 active:scale-95"
+                                className="relative p-3 rounded-xl flex items-center justify-center transition-colors hover:bg-foreground/5 active:scale-90"
                             >
                                 {isActive && (
                                     <motion.div
                                         layoutId="nav-pill"
-                                        className="absolute inset-0 bg-foreground/10 rounded-xl"
-                                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                                        className="absolute inset-0 bg-foreground/15 rounded-xl border border-foreground/5"
+                                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
                                     />
                                 )}
-                                <Icon
-                                    strokeWidth={isActive ? 2.5 : 2}
-                                    className={`w-6 h-6 relative z-10 transition-colors ${isActive ? "text-foreground" : "text-foreground/40"
-                                        }`}
-                                />
+                                <motion.div
+                                    whileTap={{ scale: 0.8 }}
+                                    initial={false}
+                                    className="relative z-10"
+                                >
+                                    <Icon
+                                        strokeWidth={isActive ? 2.5 : 2}
+                                        className={`w-6 h-6 transition-colors ${isActive ? "text-foreground" : "text-foreground/40"
+                                            }`}
+                                    />
+                                </motion.div>
                             </Link>
                         );
                     })}

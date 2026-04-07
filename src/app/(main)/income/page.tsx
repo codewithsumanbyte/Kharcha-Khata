@@ -61,7 +61,10 @@ export default function IncomeDashboard() {
                         <div key={inc.id} className="glass p-4 flex items-center justify-between">
                             <div>
                                 <p className="font-medium text-base">{inc.category}</p>
-                                <p className="text-xs text-foreground/50">{inc.notes || new Date(inc.date).toLocaleDateString()}</p>
+                                <div className="flex items-center gap-2 text-xs text-foreground/50">
+                                    <span>{new Date(inc.date).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit' })}</span>
+                                    {inc.notes && <span>• {inc.notes}</span>}
+                                </div>
                             </div>
                             <p className="font-semibold text-lg text-success">
                                 +{currencySymbol}{inc.amount.toFixed(2)}
